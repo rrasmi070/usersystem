@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Site{% endblock title %}
+
+{% block body %}
+<div class="container-fluid">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Sl No.</th>
+      <th scope="col">First</th>
+      <th scope="col">USERNAME</th>
+      <th scope="col">STATUS</th>
+      <th scope="col">SUPPERUSER STATUS</th>
+      <th scope="col">UPDATE STATUS</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for d in data %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{d.first_name}} {{d.last_name}} {{ or }} {{d.username}}</td>
+      <td>{{d.email}}</td>
+      <td>{{d.is_active}}</td>
+      <td>{{d.is_superuser}}</td>
+      <td>
+        <form action="{% url 'update' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="hid" value="{{d.id}}">
+            <select name="stas" id="cars">
+              <option value="Active">Active</option>
+              <option value="Deactive">Deactive</option>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit">
+          </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock body %}

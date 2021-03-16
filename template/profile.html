@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profile Page{% endblock title %}
+
+{% block body %}
+<style>
+    .avatar {
+  vertical-align: middle;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+</style>
+<div class="container mt-3">
+    <img src="media/a.png" alt="Avatar" class="avatar">
+    <table class="table mt-4">
+        <!-- <caption>List of users</caption> -->
+        
+        <tbody>
+          <tr>
+            <th scope="row"></th>
+            <td>Name :</td>
+            <td>{{user.first_name}} {{user.last_name}}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Email :</td>
+            <td>{{user.email}}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Date of Join :</td>
+            <td>{{user.date_joined}}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Status :</td>
+            <td>{{user.is_active}}</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td>Last login :</td>
+            <td>{{user.last_login}}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+{% endblock body %}
