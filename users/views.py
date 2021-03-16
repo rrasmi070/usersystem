@@ -60,6 +60,7 @@ def adminsite(request):
                 data = User.objects.all()
                 return render(request,'super_details.html',{'data':data})
             
+            
     else:
         return redirect('/')
     
