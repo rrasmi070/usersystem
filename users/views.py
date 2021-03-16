@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-# from django.views.decorators.csrf import csrf_exempt
+from .models import *
+from django.views.decorators.csrf import csrf_exempt
 
 
 from django.http import HttpResponse
@@ -16,17 +17,24 @@ def signup(request):
         last_name = request.POST['lnm']
         username = request.POST['email']
         email = request.POST['email']
+        pict = request.FILES['asd']
         psw1 = request.POST['psw']
         psw2 = request.POST['rpsw']
+        print(pict)
         if psw1 == psw2:
             if User.objects.filter(email=email).exists():
                 messages.info(request,"Email already taken")
                 return redirect('/')
             else:
-                User.objects.create_user(username=username, password=psw2, first_name=first_name, last_name=last_name, email=email,is_active=False).save()
+                a=User.objects.create_user(username=username, password=psw2, first_name=first_name, last_name=last_name, email=email,is_active=False)
+                a.save()
+                pis=Pic(pcid=a,pc=pict)
+                pis.save()
+                
                 messages.error(request,'Signup Successfully')
     return render(request,'signup.html')
 
+@csrf_exempt
 def login(request):
     if request.method == "POST":
         username = request.POST['email']
@@ -35,7 +43,9 @@ def login(request):
         user = auth.authenticate(username=username, password=psw)
         if user is not None:
             auth.login(request, user)
-            return redirect('profile')
+            a=user.id
+            dat=Pic.objects.get(pcid=a)
+            return render(request,'profile.html',{'dat':dat})
         
     return render(request,'signup.html')
 
@@ -46,6 +56,7 @@ def logut(request):
 
 
 def profile(request):
+    
     return render(request,'profile.html')
 
 
@@ -59,7 +70,6 @@ def adminsite(request):
                 auth.login(request, user)
                 data = User.objects.all()
                 return render(request,'super_details.html',{'data':data})
-            
             
     else:
         return redirect('/')
