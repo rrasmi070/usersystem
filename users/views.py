@@ -34,7 +34,7 @@ def signup(request):
                 messages.error(request,'Signup Successfully')
     return render(request,'signup.html')
 
-@csrf_exempt
+# @csrf_exempt
 def login(request):
     if request.method == "POST":
         username = request.POST['email']
@@ -45,11 +45,13 @@ def login(request):
             auth.login(request, user)
             a=user.id
             dat=Pic.objects.get(pcid=a)
+            request.session['userid'] = username
             return render(request,'profile.html',{'dat':dat})
         
     return render(request,'signup.html')
 
 def logut(request):
+    del request.session['userid']
     auth.logout(request)
     print("Logout Success")
     return redirect('/')
